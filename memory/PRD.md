@@ -1,27 +1,37 @@
-# PRD — شبكة جواد نت اللاسلكية (Jawad Net Wireless ERP)
+# PRD — شبكة جواد نت (Jawad Net) Network/ISP ERP
 
-## Original problem statement
-Comprehensive UI modification of an existing Arabic ISP/network ERP (uploaded as gan-main.zip) WITHOUT deleting data or breaking existing functionality. Requests: move cash box + accounts to top of dashboard; remove cash from accounts screen and show عليه/له per account; add categorized professional A4 printing on accounts screen; unify the time-period system (day/month/year/custom) app-wide using the customer-statement mechanism; add an independent stock-notifications bell at the top with a count + details panel and remove low-stock from the dashboard bottom; clean the dashboard (remove recent invoices/vouchers/orders, daily sales chart). Deliver a runnable updated project ZIP with a direct download link.
+## Original Problem Statement
+Arabic RTL ISP/network ERP. This iteration modified the existing app per an 11-point spec while preserving ALL existing data, balances and functionality (nothing deleted/broken except explicitly requested removals).
 
 ## Architecture
-- Backend: FastAPI (`/app/backend/server.py`), MongoDB (motor). All routes under `/api`. JWT auth. Admin login path `/mof30`.
-- Frontend: React (CRA + craco), shadcn/ui, Tailwind, RTL Arabic. Public customer portal at `/`.
-- Data: restored from provided MongoDB dump (`/app/backup/jawad_net_db`) into DB `test_database` (299 docs).
+- Frontend: React (CRA), Tailwind, shadcn/ui, React Router. RTL Arabic. Brand colors: #221340 / #452480 (purple) + #D4AF37 (gold).
+- Backend: FastAPI (`/app/backend/server.py`, single file, `/api` prefix), Motor/MongoDB (`test_database`).
+- Auth: JWT. Admin login at `/mof30` (admin / Admin@12345). Public customer portal at `/`.
+- Data restored from provided MongoDB backup (backup/jawad_net_db → test_database).
 
-## Balance convention (unified)
-Positive balance = مدين (debit) = **عليه**; Negative = دائن (credit) = **له**; zero = متعادل. Applied on Dashboard accounts panel, Accounts screen, AccountDetail, and print (`printAccountsSummary`, statement `fmtBalance`).
+## User Personas
+- Admin/staff: manage sales, purchases, accounts, cards, receipts, reports, notifications.
+- Subscribers/POS: public portal, receive notifications, order cards.
+
+## Core Requirements (static)
+- Never alter accounting/balance/sales/purchase logic. All filters operate on real DB data. RTL, offline/online sync, print/PDF, permissions preserved.
 
 ## Implemented (2026-06)
-- Dashboard: Cash box + Accounts moved to TOP as main cards; removed daily-sales chart, recent invoices/vouchers/orders, and bottom low-stock section. Kept KPI overview + quick actions.
-- Accounts screen: cash box/الصندوق removed entirely; added الحالة column (عليه/له badge) + absolute-value balances; added print dialog to print all or a specific category (customer debts / POS / suppliers / expenses) with a period selector → professional A4 report (network name, account rows, balance, state, totals, date/period).
-- Stock notifications bell: new header icon (`StockAlertsBell`) with new-alert badge; dialog lists low-stock items; badge clears when viewed (localStorage). Backend endpoint `GET /api/stock/alerts`.
-- Unified `PeriodFilter` component (day/month/year/custom + from/to) used in Cash box and Accounts print.
-- Fixed backwards عليه/له label in AccountDetail.
-- Final ZIP: `/app/frontend/public/jawad-net-updated.zip` (served at `/jawad-net-updated.zip`).
+This iteration (all verified 100% by testing agent, iteration_1.json):
+1. **Accounts screen** redesigned as responsive modern card grid (name, balance, state عليه/له); clicking a card opens full account detail. Type filters, custom lists, transfer, print preserved.
+2. **Removed** the two transfer summary stats (مجموع التحويلات / التحويلات الكلية) from Accounts UI only (transfer data & feature kept).
+3. **Dashboard 'نظرة عامة'** moved to top & made prominent (gradient hero). Now shows exactly 4 KPIs: مبيعات اليوم, مبيعات الشهر, ديون العملاء (excludes POS), ديون نقاط البيع (new, net of all POS balances). Removed: purchases, supplier debts, cards sold/available, inventory value. Backend `/reports/dashboard` returns `pos_debts` and POS-excluded `customer_debts`.
+4. **Send Notification** moved to standalone screen `/send-notification` (removed from Settings) with the send form + سجل الإشعارات السابقة (log) featuring period filter (يومي/شهري/سنوي/مخصص) + search + summary counts.
+5. **Quick shortcuts** added: المبيعات, السندات, المخزون, إرسال إشعار (same tile design), alongside existing shortcuts.
+6/7. **Reports unified** via shared `PeriodFilter` (يومي/شهري/سنوي/مخصص/الكل) — real filtering on date-based tabs (sales, purchases, electronic, card order log, stock). Snapshot tabs (customer/supplier debts, opening balances) unchanged per user decision. Stock tab gets period movements (`أُضيف بالفترة` / `بيع بالفترة`) via `/stock?start=&end=`. Unified print/PDF headers & result totals.
+8. **Quick transfer (شحن سريع) history** now has period filter + search (uses `/admin/quick-recharge/list` start/end).
+9. **Cards numbered list** now has category filter + status + number search + period filter (by registered date), working together; result count shown. `/cards` supports `category_id`.
 
-## Test status
-Frontend testing agent: 100% pass (iteration_1.json). No data mutated. Regression on customers/reports/account-detail OK.
+## Backlog / Remaining (P2, optional)
+- Modularize server.py into domain routers.
+- Add pagination to `/cards` as data grows.
+- Aggregate stock period movements in Mongo for larger datasets.
+- (Cosmetic) shadcn Calendar/Popover instead of native date input in PeriodFilter.
 
-## Backlog / next
-- P2: extract QuickRechargeButton/CashBox/AccountsPanel into separate component files.
-- P2: optional server-side (cross-device) "seen" state for stock alerts.
+## Next Tasks
+- Await user feedback on the delivered iteration.
