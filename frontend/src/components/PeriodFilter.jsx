@@ -28,13 +28,10 @@ export const rangeForPeriod = (p) => {
 export default function PeriodFilter({
   period, start, end,
   onChange,               // ({period, start, end}) => void
-  includeAll = false,
   testidPrefix = "period",
   className = "",
 }) {
-  const presets = includeAll
-    ? [["all", "الكل"], ["day", "يومي"], ["month", "شهري"], ["year", "سنوي"]]
-    : [["day", "يومي"], ["month", "شهري"], ["year", "سنوي"]];
+  const presets = [["day", "يومي"], ["month", "شهري"], ["year", "سنوي"]];
 
   const applyPreset = (p) => {
     const r = rangeForPeriod(p);
