@@ -11,12 +11,11 @@ import { toast } from "sonner";
 import { fmt, fmtDate, genUUID } from "@/lib/utils";
 import { printReport } from "@/lib/print";
 import { useAuth } from "@/lib/auth";
+import PeriodFilter from "@/components/PeriodFilter";
 import { Plus, Printer, Trash2, Filter, Wallet } from "lucide-react";
 
 const iso = (d) => d.toISOString().slice(0, 10);
-const startOfToday = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
 const startOfMonth = () => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); };
-const startOfYear = () => { const d = new Date(); return new Date(d.getFullYear(), 0, 1); };
 
 export default function Expenses() {
   const { user } = useAuth();
@@ -39,14 +38,6 @@ export default function Expenses() {
     setAccounts((await api.get("/expense-accounts")).data);
   };
   useEffect(() => { load(); }, []);
-
-  const applyPeriod = (p) => {
-    setPeriod(p);
-    const today = new Date();
-    if (p === "day") { setStart(iso(startOfToday())); setEnd(iso(today)); }
-    else if (p === "month") { setStart(iso(startOfMonth())); setEnd(iso(today)); }
-    else if (p === "year") { setStart(iso(startOfYear())); setEnd(iso(today)); }
-  };
 
   const filtered = useMemo(() => {
     const s = start ? new Date(start + "T00:00:00") : null;
@@ -133,14 +124,8 @@ export default function Expenses() {
 
       <Card className="p-3 no-print" data-testid="exp-filters">
         <div className="flex items-center gap-2 mb-3 text-sm text-slate-600"><Filter size={14}/> فلترة</div>
-        <div className="flex flex-wrap gap-2 mb-3">
-          {[["day","يومي"],["month","شهري"],["year","سنوي"],["custom","مخصص"]].map(([k,l]) => (
-            <button key={k} onClick={() => applyPeriod(k)} className={`px-3 py-1.5 rounded-full text-xs border ${period===k?"bg-[#452480] text-white border-[#452480]":"border-slate-300 hover:bg-slate-50"}`} data-testid={`exp-period-${k}`}>{l}</button>
-          ))}
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <div><Label className="text-xs">من</Label><Input type="date" value={start} onChange={(e) => { setStart(e.target.value); setPeriod("custom"); }} data-testid="exp-start"/></div>
-          <div><Label className="text-xs">إلى</Label><Input type="date" value={end} onChange={(e) => { setEnd(e.target.value); setPeriod("custom"); }} data-testid="exp-end"/></div>
+        <div>
+          <PeriodFilter period={period} start={start} end={end} onChange={({ period: p, start: s, end: e }) => { setPeriod(p); setStart(s); setEnd(e); }} testidPrefix="exp-period" />
         </div>
       </Card>
 

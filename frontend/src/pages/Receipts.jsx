@@ -11,14 +11,13 @@ import { toast } from "sonner";
 import { fmt, fmtDate, genUUID, openWhatsApp, buildReceiptMessage } from "@/lib/utils";
 import { printReceipt } from "@/lib/print";
 import { useAuth } from "@/lib/auth";
+import PeriodFilter from "@/components/PeriodFilter";
 import { Plus, Printer, MessageCircle, X, Filter, Trash2 } from "lucide-react";
 import { printReport } from "@/lib/print";
 import { useMemo } from "react";
 
 const _iso = (d) => d.toISOString().slice(0, 10);
-const _startOfToday = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
 const _startOfMonth = () => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); };
-const _startOfYear = () => { const d = new Date(); return new Date(d.getFullYear(), 0, 1); };
 
 export default function Receipts() {
   const { user } = useAuth();
@@ -39,13 +38,6 @@ export default function Receipts() {
   const [rstart, setRstart] = useState(_iso(_startOfMonth()));
   const [rend, setRend] = useState(_iso(new Date()));
   const [rkind, setRkind] = useState("all"); // all | receipt | payment
-
-  const applyPeriod = (p) => {
-    setPeriod(p); const today = new Date();
-    if (p === "day") { const eod = new Date(today); eod.setHours(23,59,59,999); setRstart(_iso(_startOfToday())); setRend(_iso(eod)); }
-    else if (p === "month") { setRstart(_iso(_startOfMonth())); setRend(_iso(today)); }
-    else if (p === "year") { setRstart(_iso(_startOfYear())); setRend(_iso(today)); }
-  };
 
   const filtered = useMemo(() => {
     const s = rstart ? new Date(rstart + "T00:00:00") : null;
@@ -168,14 +160,8 @@ export default function Receipts() {
 
       <Card className="p-3 no-print" data-testid="rec-filters">
         <div className="flex items-center gap-2 mb-3 text-sm text-slate-600"><Filter size={14}/> فلترة</div>
-        <div className="flex flex-wrap gap-2 mb-3">
-          {[["day","يومي"],["month","شهري"],["year","سنوي"],["custom","مخصص"]].map(([k,l]) => (
-            <button key={k} onClick={() => applyPeriod(k)} className={`px-3 py-1.5 rounded-full text-xs border ${period===k?"bg-[#452480] text-white border-[#452480]":"border-slate-300 hover:bg-slate-50"}`} data-testid={`rec-period-${k}`}>{l}</button>
-          ))}
-        </div>
-        <div className="grid grid-cols-2 gap-2 mb-3">
-          <div><Label className="text-xs">من</Label><Input type="date" value={rstart} onChange={(e) => { setRstart(e.target.value); setPeriod("custom"); }} data-testid="rec-start"/></div>
-          <div><Label className="text-xs">إلى</Label><Input type="date" value={rend} onChange={(e) => { setRend(e.target.value); setPeriod("custom"); }} data-testid="rec-end"/></div>
+        <div className="mb-3">
+          <PeriodFilter period={period} start={rstart} end={rend} onChange={({ period: p, start: s, end: e }) => { setPeriod(p); setRstart(s); setRend(e); }} testidPrefix="rec-period" />
         </div>
         <div className="flex flex-wrap gap-2">
           {[["all","الكل"],["receipt","قبض"],["payment","صرف"]].map(([k,l]) => (
