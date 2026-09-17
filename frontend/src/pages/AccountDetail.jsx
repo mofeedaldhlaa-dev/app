@@ -11,12 +11,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { toast } from "sonner";
 import { fmt, fmtDate, genUUID, openWhatsApp, buildReceiptMessage } from "@/lib/utils";
 import { printStatement } from "@/lib/print";
+import PeriodFilter from "@/components/PeriodFilter";
 import { useAuth } from "@/lib/auth";
 import { ArrowRight, Printer, Receipt, FilePlus, Send, MessageCircle, Wallet } from "lucide-react";
 
 const TYPE_LABELS = { cash: "الصندوق", customer: "عميل", pos: "نقطة بيع", supplier: "مورد", expense: "حساب مصروفات" };
 const _iso = (d) => d.toISOString().slice(0, 10);
-const _sof = (d) => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
 
 export default function AccountDetail() {
   const { type, id } = useParams();
@@ -48,15 +48,6 @@ export default function AccountDetail() {
     }
   };
   useEffect(() => { load(); }, [type, id, start, end]);
-
-  const applyPeriod = (p) => {
-    setPeriod(p);
-    const today = new Date();
-    if (p === "all") { setStart(""); setEnd(""); return; }
-    if (p === "day") { setStart(_iso(_sof(today))); setEnd(_iso(today)); }
-    else if (p === "month") { setStart(_iso(new Date(today.getFullYear(), today.getMonth(), 1))); setEnd(_iso(today)); }
-    else if (p === "year") { setStart(_iso(new Date(today.getFullYear(), 0, 1))); setEnd(_iso(today)); }
-  };
 
   const stateLabel = (b) => b > 0 ? "عليه" : b < 0 ? "له" : "متعادل";
   const stateColor = (b) => b > 0 ? "text-red-700" : b < 0 ? "text-emerald-700" : "text-slate-500";
@@ -248,15 +239,15 @@ export default function AccountDetail() {
         <Button onClick={doPrint} variant="outline" data-testid="btn-print"><Printer size={14} className="ml-1"/> طباعة الحساب</Button>
       </Card>
 
-      {/* Period filter */}
-      <Card className="p-3 flex flex-col sm:flex-row gap-2 sm:items-end flex-wrap no-print">
-        <div className="flex gap-1 flex-wrap">
-          {[["all","الكل"],["day","اليوم"],["month","الشهر"],["year","السنة"]].map(([k,l]) => (
-            <button key={k} onClick={() => applyPeriod(k)} className={`px-3 py-1.5 rounded-full text-xs border ${period===k?"bg-[#452480] text-white border-[#452480]":"border-slate-300"}`} data-testid={`acc-period-${k}`}>{l}</button>
-          ))}
-        </div>
-        <div><label className="text-xs">من</label><Input type="date" value={start} onChange={(e) => { setStart(e.target.value); setPeriod("custom"); }} data-testid="acc-start"/></div>
-        <div><label className="text-xs">إلى</label><Input type="date" value={end} onChange={(e) => { setEnd(e.target.value); setPeriod("custom"); }} data-testid="acc-end"/></div>
+      {/* Period filter — يومي / شهري / سنوي / مخصص */}
+      <Card className="p-3 no-print">
+        <PeriodFilter
+          period={period}
+          start={start}
+          end={end}
+          onChange={({ period: p, start: s, end: e }) => { setPeriod(p); setStart(s); setEnd(e); }}
+          testidPrefix="acc-period"
+        />
       </Card>
 
       {/* Statement — table on desktop, cards on mobile (same style as customers screen) */}

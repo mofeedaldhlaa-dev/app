@@ -265,7 +265,7 @@ export default function Reports() {
           {DATE_TABS.includes(tab) && (
             <div>
               <label className="text-xs text-slate-500 block mb-1">الفترة الزمنية</label>
-              <PeriodFilter includeAll period={period} start={start} end={end} onChange={onPeriodChange} testidPrefix="rep-period" />
+              <PeriodFilter period={period} start={start} end={end} onChange={onPeriodChange} testidPrefix="rep-period" />
             </div>
           )}
 

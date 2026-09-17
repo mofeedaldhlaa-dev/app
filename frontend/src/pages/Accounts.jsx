@@ -344,7 +344,7 @@ export default function Accounts() {
             </div>
             <div>
               <Label className="mb-1 block">الفترة الزمنية</Label>
-              <PeriodFilter includeAll period={printPeriod} start={printStart} end={printEnd}
+              <PeriodFilter period={printPeriod} start={printStart} end={printEnd}
                 onChange={({ period, start, end }) => { setPrintPeriod(period); setPrintStart(start); setPrintEnd(end); }}
                 testidPrefix="acc-print-period" />
               <div className="text-[11px] text-slate-400 mt-1">التقرير يعرض أرصدة الحسابات الحالية بحالة (عليه / له) والإجماليات.</div>

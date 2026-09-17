@@ -164,7 +164,7 @@ export default function Cards() {
           </div>
           <div>
             <label className="text-xs text-slate-500 block mb-1">الفترة (حسب تاريخ التسجيل)</label>
-            <PeriodFilter includeAll period={period} start={start} end={end}
+            <PeriodFilter period={period} start={start} end={end}
               onChange={({ period: p, start: s, end: e }) => { setPeriod(p); setStart(s); setEnd(e); }}
               testidPrefix="cards-period" />
           </div>

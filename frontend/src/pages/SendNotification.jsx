@@ -129,7 +129,7 @@ export default function SendNotification() {
 
         <div className="space-y-2 bg-slate-50 border rounded-lg p-3">
           <Label className="text-xs">تصفية حسب الفترة</Label>
-          <PeriodFilter includeAll period={period} start={start} end={end}
+          <PeriodFilter period={period} start={start} end={end}
             onChange={({ period: p, start: s, end: e }) => { setPeriod(p); setStart(s); setEnd(e); }}
             testidPrefix="notif-log-period" />
           <div className="relative pt-1">

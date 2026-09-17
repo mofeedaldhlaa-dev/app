@@ -160,7 +160,7 @@ function QuickRechargeButton() {
               {showHistory && (
                 <div className="mt-2 space-y-2" data-testid="qr-history">
                   <div className="space-y-2 bg-slate-50 border rounded-lg p-2">
-                    <PeriodFilter includeAll period={histPeriod} start={histStart} end={histEnd} onChange={applyPeriod} testidPrefix="qr-hist-period" />
+                    <PeriodFilter period={histPeriod} start={histStart} end={histEnd} onChange={applyPeriod} testidPrefix="qr-hist-period" />
                     <div className="relative">
                       <Search size={13} className="absolute right-2 top-3 text-slate-400"/>
                       <Input className="pr-7 h-9" placeholder="بحث بالاسم أو رقم العملية..." value={histSearch} onChange={(e) => setHistSearch(e.target.value)} data-testid="qr-hist-search"/>
