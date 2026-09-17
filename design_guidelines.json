@@ -1,0 +1,118 @@
+{
+  "project_identity": {
+    "name": "Jawad Net Wireless ERP & Sales System",
+    "arabic_name": "نظام محاسبة ومبيعات وكروت شبكة جواد نت اللاسلكية",
+    "phone": "784225716",
+    "app_type": "hybrid_fullstack",
+    "theme_archetype": "ARCHETYPE 5: LUXURY & ARABIC ERP PRECISION",
+    "primary_mode": "RTL Arabic First",
+    "color_palette_story": "Deep Imperial Purple (#1D1135) as the commanding base, Royal Violet (#33195C) for interactive layers, Gold Accent (#D4AF37 / #F3C649) for financial highlights & card categories, and Pristine Ivory/Slate (#F8F9FC) for high-density financial data readability."
+  },
+  "responsive": {
+    "breakpoint": "mobile-first",
+    "layout": "Mobile-first layout where heavy multi-column tables transform to card-based data items on screens < 768px. Navigation switches from persistent RTL Sidebar to bottom dock navigation and touch-friendly header sheet on mobile.",
+    "typography": "Fluid rem-based scaling using Arabic fonts (Tajawal / Cairo / IBM Plex Sans Arabic). Body font size min 14px on mobile, input font size 16px to avoid iOS auto-zoom.",
+    "overflow_guard": "Strict overflow-x-hidden on root and container elements. Scrollable tables enclosed in horizontal swipe wrappers with indicators for overflow.",
+    "tap_targets": "Minimum touch target height of 44px (min-h-[44px]) and generous padding for buttons, card action buttons, and table row tap areas."
+  },
+  "typography": {
+    "font_family_primary": "Tajawal, 'IBM Plex Sans Arabic', Cairo, sans-serif",
+    "font_family_heading": "Cairo, Tajawal, sans-serif",
+    "font_family_mono": "'IBM Plex Mono', 'Courier New', monospace",
+    "font_pairings": "Cairo (700/800) for Headings & Financial Totals + Tajawal (400/500/600) for UI Body & Labels",
+    "scale": {
+      "h1": "text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-slate-100",
+      "h3": "text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100",
+      "h4": "text-lg sm:text-xl font-semibold text-slate-800 dark:text-slate-200",
+      "body": "text-sm sm:text-base font-normal text-slate-700 dark:text-slate-300 leading-relaxed",
+      "caption": "text-xs text-slate-500 dark:text-slate-400 font-medium",
+      "financial_num": "font-mono font-bold tracking-tight"
+    }
+  },
+  "colors": {
+    "primary": {
+      "900": "#160C2B",
+      "800": "#221340",
+      "700": "#311B5C",
+      "600": "#452480",
+      "500": "#5E32B3",
+      "DEFAULT": "#311B5C"
+    },
+    "accent_gold": {
+      "light": "#FFF3CD",
+      "DEFAULT": "#D4AF37",
+      "hover": "#C5A028",
+      "deep": "#997A15",
+      "glow": "rgba(212, 175, 55, 0.25)"
+    },
+    "surface": {
+      "bg_light": "#F8F9FD",
+      "card_light": "#FFFFFF",
+      "sidebar_dark": "#1A0F33",
+      "border_subtle": "#E2E8F0",
+      "border_gold": "rgba(212, 175, 55, 0.3)"
+    },
+    "status": {
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "danger": "#EF4444",
+      "info": "#3B82F6"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-md bg-purple-950/80 border border-gold/20 shadow-xl",
+    "gold_border_accent": "border border-amber-500/30 shadow-[0_0_15px_rgba(212,175,55,0.1)]",
+    "card_shadow": "shadow-sm hover:shadow-md transition-shadow duration-200 border border-slate-200/80 dark:border-purple-900/50",
+    "active_indicator": "bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 font-bold"
+  },
+  "rtl_rules": {
+    "direction": "rtl",
+    "icon_placement": "Icons pre-pended on the right side of text inside flex containers (flex-row-reverse or normal flex in RTL mode).",
+    "drawer_side": "Sheet menu slide-in from right (side='right').",
+    "currency_symbol": "ر.ي (or د.إ / ر.س depending on context, standard: ر.ي / YER)",
+    "alignment": "Text aligned right (text-right) by default for all form fields, labels, table cells, except standard digits which can be text-left or text-right depending on layout."
+  },
+  "component_guidelines": {
+    "header": "Sticky glassmorphic top header with Jawad Net logo, connection sync status indicator (online/offline), quick quick-action '+' invoice button, notification center bell, and user profile drawer.",
+    "sidebar": "RTL Persistent desktop navigation with deep purple gradient background (#1A0F33 to #2B1654), highlighted active state in gold stroke, collapsable on tablet.",
+    "mobile_dock": "Fixed bottom navigation bar on mobile screen (< 768px) with quick access to: Dashboard (الرئيسية), Sales (المبيعات), Cards (الكروت), Customers (العملاء), and Quick Invoice (فاتورة جديدة).",
+    "dashboard_cards": "Bento Grid Mode B layout: Top stats displaying Today Sales (مبيعات اليوم), Monthly Sales (مبيعات الشهر), Customers Debts (ديون العملاء), Available Cards (الكروت المتاحة), Inventory Value (قيمة المخزون).",
+    "table_to_card_mobile": "All tabular data (Invoices, Customers, Cards, Receipts) MUST render standard standard <Table> on desktop (md:) and transform to stacked <Card> components on mobile screens.",
+    "forms": "Use Shadcn Input, Select, Dialog with heavy RTL overrides. Ensure inputs have explicit text-right, rounded borders, clear focus ring in purple/gold."
+  },
+  "image_urls": [
+    {
+      "category": "hero_banner",
+      "url": "https://images.unsplash.com/photo-1656717420421-5bb65ac0e8b3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjV8MHwxfHNlYXJjaHwzfHx3aXJlbGVzcyUyMHdpZmklMjBuZXR3b3JrJTIwcm91dGVyJTIwdGVjaG5vbG9neSUyMGFic3RyYWN0JTIwZ29sZCUyMHB1cnBsZXxlbnwwfHx8fDE3ODg1MzU5NjN8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract purple and gold light technology background for login page and card ordering banner."
+    },
+    {
+      "category": "network_router",
+      "url": "https://images.pexels.com/photos/28348054/pexels-photo-28348054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "High-tech wireless router with neon illumination for Jawad Net public card request page showcase."
+    },
+    {
+      "category": "wifi_concept",
+      "url": "https://images.pexels.com/photos/4218546/pexels-photo-4218546.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Sleek wireless hardware illustration for inventory router item previews."
+    }
+  ],
+  "instructions_to_main_agent": [
+    "Ensure the entire app is configured with dir='rtl' on root or main layout container.",
+    "Use Cairo or Tajawal fonts via Google Fonts import in index.html or index.css.",
+    "Apply Deep Purple (#221340) for main headers/brand surfaces and Gold (#D4AF37) for highlights, active tabs, badge indicators, and primary action CTAs.",
+    "Implement full mobile-first responsive transforms: Tables render as rich cards on small viewports.",
+    "Ensure all interactive components (buttons, tabs, inputs, table rows, dialog triggers) contain unique data-testid attributes (e.g., data-testid='sales-create-invoice-btn').",
+    "Support offline status indicator badge with sync status (متصل / غير متصل / جاري المزامنة).",
+    "Provide PDF print preview modal / action for sales invoices and receipts with Arabic formatting.",
+    "Include quick WhatsApp share functionality links for invoices and card request links."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "Do not use generic blue SaaS colors. Stick strictly to Deep Purple + Gold + White palette.",
+    "Do not center-align body text or form inputs. Maintain clean RTL right alignment.",
+    "Ensure touch targets on mobile viewports are at least 44px tall.",
+    "Avoid standard full-width plain borders; use subtle muted slate or golden ambient accents for financial clarity.",
+    "Every key data card or metric box must have a clear visual hierarchy with data-testid attributes."
+  ]
+}
