@@ -258,12 +258,12 @@ const Stat = ({ label, value, sub, tone = "light", testid, icon: Icon }) => {
   return (
     <Card className={`${styles} p-4 md:p-5 rounded-2xl shadow-sm transition duration-200 hover:shadow-md hover:-translate-y-0.5`} data-testid={testid}>
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="text-xs font-medium opacity-80">{label}</div>
-          <div className="text-2xl md:text-3xl font-black num mt-1.5 truncate">{value}</div>
+          <div className="text-xl sm:text-2xl md:text-3xl font-black num mt-1.5 leading-tight break-words" data-testid={testid ? `${testid}-value` : undefined}>{value}</div>
           {sub && <div className="text-xs opacity-70 mt-1">{sub}</div>}
         </div>
-        {Icon && <span className={`shrink-0 w-9 h-9 rounded-xl flex items-center justify-center ${iconWrap}`}><Icon size={18} /></span>}
+        {Icon && <span className={`shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center ${iconWrap}`}><Icon size={18} /></span>}
       </div>
     </Card>
   );
