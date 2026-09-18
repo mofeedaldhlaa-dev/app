@@ -27,6 +27,11 @@ This iteration (all verified 100% by testing agent, iteration_1.json):
 8. **Quick transfer (شحن سريع) history** now has period filter + search (uses `/admin/quick-recharge/list` start/end).
 9. **Cards numbered list** now has category filter + status + number search + period filter (by registered date), working together; result count shown. `/cards` supports `category_id`.
 
+## Implemented (follow-ups)
+- Unified period filter across the WHOLE app via shared `PeriodFilter` component — exactly 4 options (يومي/شهري/سنوي/مخصص + من/إلى), no "الكل" button anywhere. Applied to AccountDetail (reference), Sales, Receipts, Expenses, Reports, Cards, SendNotification log, quick-recharge history, Accounts print. Real data filtering. `includeAll` prop removed to lock the format.
+- Dashboard mobile fix: removed `truncate` on KPI values; responsive font + break-words so monthly-sales (and all overview numbers) show fully on small screens. Verified 360/390px.
+- PWA installability RESTORED (was broken: assets nested in public/public/ and plain template index.html). Moved manifest.json, manifest-mof30.json, service-worker.js, icons/ to public/; rewrote public/index.html (RTL, theme-color #221340, manifest link, apple-touch-icons, SW registration) keeping Emergent scripts. Users app → GAWAD NET manifest (start_url=/); admin → إدارة الحسابات manifest (start_url=/mof30) via setActiveManifest. SW uses network-only for /api (no stale API). InstallPromptBanner on public portal; admin install in Settings (email-gated). Verified 100%.
+
 ## Backlog / Remaining (P2, optional)
 - Modularize server.py into domain routers.
 - Add pagination to `/cards` as data grows.
